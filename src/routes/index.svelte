@@ -43,4 +43,23 @@
 	<figcaption>Have fun with Sapper!</figcaption>
 </figure>
 
-<p><strong>Try editing this file (src/routes/index.svelte) to test live reloading.</strong></p>
+<p><strong>{post}</strong></p>
+
+<script context="module">
+	export async function preload({ params, query }) {
+	  	// the `slug` parameter is available because
+	  	// this file is called [slug].html
+	  	const res = await this.fetch(`https://powerful-woodland-58010.herokuapp.com/vacancies`);
+	  	const data = await res.json();
+		if (res.status === 200) {
+			// console.log(JSON.stringify(data));
+			return { post: JSON.stringify(data) };
+		} else {
+			this.error(res.status, data.message);
+		}
+	}
+</script>
+
+<script>
+	export let post;
+</script>
